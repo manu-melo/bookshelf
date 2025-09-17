@@ -1,0 +1,111 @@
+import { Book } from "../types";
+
+export const mockBooks: Book[] = [
+  {
+    id: "1",
+    title: "1984",
+    author: "George Orwell",
+    genre: "Distopia",
+    pages: 328,
+    currentPage: 120,
+    status: "reading",
+    rating: 5,
+    dateAdded: "2024-01-15",
+    dateStarted: "2024-02-01",
+  },
+  {
+    id: "2",
+    title: "Dom Casmurro",
+    author: "Machado de Assis",
+    genre: "Literatura Clássica",
+    pages: 256,
+    currentPage: 256,
+    status: "completed",
+    rating: 4,
+    dateAdded: "2024-01-10",
+    dateStarted: "2024-01-12",
+    dateCompleted: "2024-01-25",
+  },
+  {
+    id: "3",
+    title: "O Senhor dos Anéis: A Sociedade do Anel",
+    author: "J.R.R. Tolkien",
+    genre: "Fantasia",
+    pages: 576,
+    currentPage: 350,
+    status: "reading",
+    rating: 5,
+    dateAdded: "2024-02-01",
+    dateStarted: "2024-02-05",
+  },
+  {
+    id: "4",
+    title: "Clean Code",
+    author: "Robert C. Martin",
+    genre: "Tecnologia",
+    pages: 464,
+    currentPage: 464,
+    status: "completed",
+    rating: 4,
+    dateAdded: "2024-01-05",
+    dateStarted: "2024-01-08",
+    dateCompleted: "2024-02-15",
+  },
+  {
+    id: "5",
+    title: "Sapiens",
+    author: "Yuval Noah Harari",
+    genre: "História",
+    pages: 512,
+    currentPage: 512,
+    status: "completed",
+    rating: 5,
+    dateAdded: "2023-12-20",
+    dateStarted: "2023-12-22",
+    dateCompleted: "2024-01-20",
+  },
+  {
+    id: "6",
+    title: "O Código Da Vinci",
+    author: "Dan Brown",
+    genre: "Mistério",
+    pages: 432,
+    currentPage: 100,
+    status: "abandoned",
+    rating: 2,
+    dateAdded: "2024-01-20",
+    dateStarted: "2024-01-22",
+  },
+  {
+    id: "7",
+    title: "Atomic Habits",
+    author: "James Clear",
+    genre: "Autoajuda",
+    pages: 320,
+    currentPage: 0,
+    status: "to-read",
+    dateAdded: "2024-02-10",
+  },
+  {
+    id: "8",
+    title: "O Pequeno Príncipe",
+    author: "Antoine de Saint-Exupéry",
+    genre: "Literatura Infantil",
+    pages: 96,
+    currentPage: 96,
+    status: "completed",
+    rating: 5,
+    dateAdded: "2023-12-15",
+    dateStarted: "2023-12-16",
+    dateCompleted: "2023-12-17",
+  },
+];
+
+// Simular delay de API
+export const fetchBooks = async (): Promise<Book[]> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(mockBooks);
+    }, 100);
+  });
+};

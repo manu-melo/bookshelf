@@ -2,15 +2,19 @@
 
 import { useState, useMemo } from "react";
 import { Book } from "@/types";
+
 import { mockBooks } from "@/data/mockData";
 import { BookCard } from "@/app/BookCard/page";
+
+import { useBooksStorage } from "@/hooks/useBooksStorage";
+
 import { SearchBar } from "@/components/SearchBar";
 import { GenreFilter } from "@/components/GenreFilter";
 import { Button } from "@/components/ui/button";
 import { Plus, BookOpen } from "lucide-react";
 
 export default function BibliotecaPage() {
-  const [books, setBooks] = useState<Book[]>(mockBooks);
+  const { books, isLoading, updateBook, removeBook, updateReadingStatus, resetBooks } = useBooksStorage();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("todos");
 
@@ -44,7 +48,7 @@ export default function BibliotecaPage() {
     );
 
     if (confirmDelete) {
-      setBooks(books.filter((b) => b.id !== book.id));
+      removeBook(book.id);
       // TODO: Implementar toast de confirmação
     }
   };
@@ -53,6 +57,18 @@ export default function BibliotecaPage() {
     console.log("Adicionar novo livro");
     // TODO: Implementar navegação para página de adição
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-lg text-gray-600">Carregando livros...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -74,10 +90,19 @@ export default function BibliotecaPage() {
                 </p>
               </div>
             </div>
-            <Button onClick={handleAddBook} className="flex items-center gap-2">
-              <Plus className="w-4 h-4" />
-              Adicionar Livro
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={handleAddBook} className="flex items-center gap-2">
+                <Plus className="w-4 h-4" />
+                Adicionar Livro
+              </Button>
+              <Button 
+                onClick={resetBooks} 
+                variant="outline" 
+                className="flex items-center gap-2"
+              >
+                🔄 Reset
+              </Button>
+            </div>
           </div>
 
           {/* Barra de busca e filtros */}

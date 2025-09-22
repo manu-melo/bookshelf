@@ -18,7 +18,7 @@ const navigation = [
   },
   {
     name: "Adicionar Livro",
-    href: "/adicionar",
+    href: "/biblioteca/add",
     icon: Plus,
   },
   {

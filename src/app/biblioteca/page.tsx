@@ -3,17 +3,18 @@
 import { useState, useMemo } from "react";
 import { Book } from "@/types";
 
-import { mockBooks } from "@/data/mockData";
 import { BookCard } from "@/components/BookCard";
-
-import { useBooksStorage } from "@/hooks/useBooksStorage";
-
 import { SearchBar } from "@/components/SearchBar";
 import { GenreFilter } from "@/components/GenreFilter";
 import { Button } from "@/components/ui/button";
 import { Plus, BookOpen } from "lucide-react";
 
+import { useBooksStorage } from "@/hooks/useBooksStorage";
+import { useRouter } from "next/navigation";
+
 export default function BibliotecaPage() {
+  const router = useRouter(); // ← inicializa router
+
   const {
     books,
     isLoading,
@@ -22,6 +23,7 @@ export default function BibliotecaPage() {
     updateReadingStatus,
     resetBooks,
   } = useBooksStorage();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("todos");
 
@@ -61,8 +63,7 @@ export default function BibliotecaPage() {
   };
 
   const handleAddBook = () => {
-    console.log("Adicionar novo livro");
-    // TODO: Implementar navegação para página de adição
+    router.push("/biblioteca/add"); // ← navega para a página de adicionar livro
   };
 
   if (isLoading) {

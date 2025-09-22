@@ -5,6 +5,7 @@ import {
   GenreStats,
   ReadingStatusData,
   DashboardData,
+  ReadingStatus,
 } from "../types";
 import { fetchBooks } from "../data/mockData";
 
@@ -19,22 +20,23 @@ export const useDashboardData = () => {
   const calculateStats = (books: Book[]): BookStats => {
     const totalBooks = books.length;
     const completedBooks = books.filter(
-      (book) => book.status === "completed"
+      (book) => book.status === ReadingStatus.LIDO
     ).length;
     const readingBooks = books.filter(
-      (book) => book.status === "reading"
+      (book) => book.status === ReadingStatus.LENDO
     ).length;
     const toReadBooks = books.filter(
-      (book) => book.status === "to-read"
+      (book) => book.status === ReadingStatus.QUERO_LER
     ).length;
     const abandonedBooks = books.filter(
-      (book) => book.status === "abandoned"
+      (book) => book.status === ReadingStatus.ABANDONADO
     ).length;
 
     const totalPages = books.reduce((sum, book) => sum + book.pages, 0);
     const pagesRead = books.reduce((sum, book) => {
-      if (book.status === "completed") return sum + book.pages;
-      if (book.status === "reading") return sum + book.currentPage;
+      if (book.status === ReadingStatus.LIDO) return sum + book.pages;
+      if (book.status === ReadingStatus.LENDO)
+        return sum + (book.currentPage || 0);
       return sum;
     }, 0);
 
@@ -48,12 +50,17 @@ export const useDashboardData = () => {
     const completionPercentage =
       totalPages > 0 ? (pagesRead / totalPages) * 100 : 0;
 
+    const pausedBooks = books.filter(
+      (book) => book.status === ReadingStatus.PAUSADO
+    ).length;
+
     return {
       totalBooks,
       totalPages,
       completedBooks,
       readingBooks,
       toReadBooks,
+      pausedBooks,
       abandonedBooks,
       pagesRead,
       averageRating,
@@ -90,16 +97,16 @@ export const useDashboardData = () => {
     }
 
     const completedCount = books.filter(
-      (book) => book.status === "completed"
+      (book) => book.status === ReadingStatus.LIDO
     ).length;
     const readingCount = books.filter(
-      (book) => book.status === "reading"
+      (book) => book.status === ReadingStatus.LENDO
     ).length;
     const abandonedCount = books.filter(
-      (book) => book.status === "abandoned"
+      (book) => book.status === ReadingStatus.ABANDONADO
     ).length;
     const toReadCount = books.filter(
-      (book) => book.status === "to-read"
+      (book) => book.status === ReadingStatus.QUERO_LER
     ).length;
 
     return [

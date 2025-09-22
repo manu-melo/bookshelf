@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import { Book } from "@/types";
 import { mockBooks } from "@/data/mockData";
-import { BookCard } from "@/components/BookCard";
+import { BookCard } from "@/app/BookCard/page";
 import { SearchBar } from "@/components/SearchBar";
 import { GenreFilter } from "@/components/GenreFilter";
 import { Button } from "@/components/ui/button";

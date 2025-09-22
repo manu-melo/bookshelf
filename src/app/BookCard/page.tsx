@@ -6,12 +6,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Eye, Edit, Trash2, Star } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+
 
 interface BookCardProps {
   book: Book;
   onView?: (book: Book) => void;
   onEdit?: (book: Book) => void;
   onDelete?: (book: Book) => void;
+  
 }
 
 const STATUS_LABELS = {
@@ -30,7 +33,13 @@ const STATUS_COLORS = {
   [ReadingStatus.ABANDONADO]: "bg-red-100 text-red-800",
 };
 
-export function BookCard({ book, onView, onEdit, onDelete }: BookCardProps) {
+export function BookCard({
+  book,
+  onView,
+  onEdit,
+  onDelete,
+  
+}: BookCardProps) {
   const renderStars = (rating?: number) => {
     if (!rating) return null;
 
@@ -119,15 +128,17 @@ export function BookCard({ book, onView, onEdit, onDelete }: BookCardProps) {
       {/* Botões de ação */}
       <CardFooter className="p-2 pt-0">
         <div className="grid grid-cols-3 gap-1 w-full">
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-xs px-1 py-1 h-7 min-w-0"
-            onClick={() => onView?.(book)}
-          >
-            <Eye className="w-3 h-3 mr-0.5" />
-            Ver
-          </Button>
+          <Link href={`/BookCard/${book.id}`}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs px-1 py-1 h-7 min-w-0"
+              onClick={() => onView?.(book)}
+            >
+              <Eye className="w-3 h-3 mr-0.5" />
+              Ver
+            </Button>
+          </Link>
           <Button
             variant="outline"
             size="sm"

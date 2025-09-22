@@ -2,8 +2,12 @@
 
 import { useState, useMemo } from "react";
 import { Book } from "@/types";
+
+import { mockBooks } from "@/data/mockData";
+import { BookCard } from "@/app/BookCard/page";
+
 import { useBooksStorage } from "@/hooks/useBooksStorage";
-import { BookCard } from "@/components/BookCard";
+
 import { SearchBar } from "@/components/SearchBar";
 import { GenreFilter } from "@/components/GenreFilter";
 import { Button } from "@/components/ui/button";

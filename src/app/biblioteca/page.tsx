@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { Book } from "@/types";
 
 import { mockBooks } from "@/data/mockData";
-import { BookCard } from "@/app/BookCard/page";
+import { BookCard } from "@/components/BookCard";
 
 import { useBooksStorage } from "@/hooks/useBooksStorage";
 
@@ -14,7 +14,14 @@ import { Button } from "@/components/ui/button";
 import { Plus, BookOpen } from "lucide-react";
 
 export default function BibliotecaPage() {
-  const { books, isLoading, updateBook, removeBook, updateReadingStatus, resetBooks } = useBooksStorage();
+  const {
+    books,
+    isLoading,
+    updateBook,
+    removeBook,
+    updateReadingStatus,
+    resetBooks,
+  } = useBooksStorage();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("todos");
 
@@ -91,13 +98,16 @@ export default function BibliotecaPage() {
               </div>
             </div>
             <div className="flex gap-2">
-              <Button onClick={handleAddBook} className="flex items-center gap-2">
+              <Button
+                onClick={handleAddBook}
+                className="flex items-center gap-2"
+              >
                 <Plus className="w-4 h-4" />
                 Adicionar Livro
               </Button>
-              <Button 
-                onClick={resetBooks} 
-                variant="outline" 
+              <Button
+                onClick={resetBooks}
+                variant="outline"
                 className="flex items-center gap-2"
               >
                 🔄 Reset

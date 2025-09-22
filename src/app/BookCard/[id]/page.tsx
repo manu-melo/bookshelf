@@ -1,23 +1,25 @@
-"use client"
+"use client";
 import { mockBooks } from "@/data/mockData";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 
-export default function Detalhes({ params }: { params: { id: string } }) {
-  const book = mockBooks.find((p) => p.id === params.id);
-  const [books, setBooks]= useState(mockBooks || {})
-  const Book = books.find((p)=>{p.id == params.id})
+export default function Detalhes() {
+  const params = useParams();
+  const id = params.id as string;
+  const [books, setBooks] = useState(mockBooks);
+  const book = books.find((p) => p.id === id);
 
-  const handleDelete=()=>{
-    if(confirm(`Deseja Deletar " ${book?.title} " da sua Biblioteca ?`)){
-        setBooks((prev) => prev.filter((b) => b.id !== Book.id));
-        alert("Livro deletado com Sucesso")
-        window.location.href="/biblioteca"
+  const handleDelete = () => {
+    if (confirm(`Deseja Deletar " ${book?.title} " da sua Biblioteca ?`)) {
+      setBooks((prev) => prev.filter((b) => b.id !== id));
+      alert("Livro deletado com Sucesso");
+      window.location.href = "/biblioteca";
     }
-  }
+  };
   if (!book) return notFound();
 
   return (
@@ -32,8 +34,7 @@ export default function Detalhes({ params }: { params: { id: string } }) {
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 25vw, 12rem"
-              />
-              
+            />
           ) : (
             <div className="text-gray-400 text-center">
               <div className="text-6xl">📚</div>
@@ -52,19 +53,46 @@ export default function Detalhes({ params }: { params: { id: string } }) {
           <p className="text-gray-700">{book.synopsis}</p>
 
           <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
-            <p><span className="font-semibold">Ano:</span> {book.year}</p>
-            <p><span className="font-semibold">Páginas:</span> {book.pages}</p>
-            <p><span className="font-semibold">ISBN:</span> {book.isbn}</p>
-            <p><span className="font-semibold">Classificação:</span> {book.rating || "–"}</p>
-            <p><span className="font-semibold">Notas:</span> {book.notes || "–"}</p>
-            <p><span className="font-semibold">Página atual:</span> {book.currentPage || "–"}</p>
-            <p><span className="font-semibold">Início:</span> {book.dateStarted || "–"}</p>
-            <p><span className="font-semibold">Conclusão:</span> {book.dateCompleted || "–"}</p>
-            <p><span className="font-semibold">Adicionado em:</span> {book.dateAdded || "–"}</p>
+            <p>
+              <span className="font-semibold">Ano:</span> {book.year}
+            </p>
+            <p>
+              <span className="font-semibold">Páginas:</span> {book.pages}
+            </p>
+            <p>
+              <span className="font-semibold">ISBN:</span> {book.isbn}
+            </p>
+            <p>
+              <span className="font-semibold">Classificação:</span>{" "}
+              {book.rating || "–"}
+            </p>
+            <p>
+              <span className="font-semibold">Notas:</span> {book.notes || "–"}
+            </p>
+            <p>
+              <span className="font-semibold">Página atual:</span>{" "}
+              {book.currentPage || "–"}
+            </p>
+            <p>
+              <span className="font-semibold">Início:</span>{" "}
+              {book.dateStarted || "–"}
+            </p>
+            <p>
+              <span className="font-semibold">Conclusão:</span>{" "}
+              {book.dateCompleted || "–"}
+            </p>
+            <p>
+              <span className="font-semibold">Adicionado em:</span>{" "}
+              {book.dateAdded || "–"}
+            </p>
           </div>
-          <div  className="flex text-red-600 justify-end  rounded ">
-
-          <button className="p-2 bg-red-600 text-white rounded" onClick={handleDelete}>Delete</button>
+          <div className="flex text-red-600 justify-end  rounded ">
+            <button
+              className="p-2 bg-red-600 text-white rounded"
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>

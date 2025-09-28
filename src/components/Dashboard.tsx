@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 import StatsCard from "./StatsCard";
 import ReadingStatusChart from "./ReadingStatusChart";
 import FavoriteGenresChart from "./FavoriteGenresChart";
@@ -73,28 +74,23 @@ export default function Dashboard() {
 
               {/* Desktop Navigation */}
               <nav className="hidden lg:flex ml-8 space-x-8">
-                <a
-                  href="#"
+                <Link
+                  href="/"
                   className="text-gray-900 hover:text-gray-700 px-3 py-2 text-sm font-medium border-b-2 border-gray-900"
                 >
                   Dashboard
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  href="/biblioteca"
                   className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
                 >
                   Biblioteca
-                </a>
+                </Link>
               </nav>
             </div>
 
             {/* Desktop Actions */}
             <div className="hidden md:flex items-center space-x-2 lg:space-x-4">
-              <button className="bg-gray-900 text-white px-3 lg:px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2">
-                <Plus className="h-4 w-4" />
-                <span className="hidden lg:inline">Adicionar Livro</span>
-                <span className="lg:hidden">Adicionar</span>
-              </button>
               <button className="text-gray-500 hover:text-gray-700 p-2">
                 <Search className="h-5 w-5" />
               </button>
@@ -206,6 +202,19 @@ export default function Dashboard() {
             }
             icon={<User className="h-6 w-6" />}
           />
+        </div>
+
+        {/* Quick Actions */}
+        <div className="mt-8 mb-8">
+          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+            Ações Rápidas
+          </h2>
+          <div className="flex gap-4">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2">
+              <Plus className="w-5 h-5" />
+              Adicionar Livro
+            </button>
+          </div>
         </div>
 
         {/* Charts and Progress */}

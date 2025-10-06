@@ -8,13 +8,11 @@ import { Eye, Edit, Trash2, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-
 interface BookCardProps {
   book: Book;
   onView?: (book: Book) => void;
   onEdit?: (book: Book) => void;
   onDelete?: (book: Book) => void;
-  
 }
 
 const STATUS_LABELS = {
@@ -33,13 +31,7 @@ const STATUS_COLORS = {
   [ReadingStatus.ABANDONADO]: "bg-red-100 text-red-800",
 };
 
-export function BookCard({
-  book,
-  onView,
-  onEdit,
-  onDelete,
-  
-}: BookCardProps) {
+export function BookCard({ book, onView, onEdit, onDelete }: BookCardProps) {
   const renderStars = (rating?: number) => {
     if (!rating) return null;
 
@@ -128,26 +120,28 @@ export function BookCard({
       {/* Botões de ação */}
       <CardFooter className="p-2 pt-0">
         <div className="grid grid-cols-3 gap-1 w-full">
-          <Link href={`/BookCard/${book.id}`}>
+          <Link href={`/livros/${book.id}`}>
             <Button
               variant="outline"
               size="sm"
-              className="text-xs px-1 py-1 h-7 min-w-0"
-              onClick={() => onView?.(book)}
+              className="text-xs px-1 py-1 h-7 min-w-0 w-full"
             >
               <Eye className="w-3 h-3 mr-0.5" />
               Ver
             </Button>
           </Link>
-          <Button
-            variant="outline"
-            size="sm"
-            className="text-xs px-1 py-1 h-7 min-w-0"
-            onClick={() => onEdit?.(book)}
-          >
-            <Edit className="w-3 h-3 mr-0.5" />
-            Editar
-          </Button>
+
+          <Link href={`/livros/${book.id}/editar`}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-xs px-1 py-1 h-7 min-w-0 w-full"
+            >
+              <Edit className="w-3 h-3 mr-0.5" />
+              Editar
+            </Button>
+          </Link>
+
           <Button
             variant="outline"
             size="sm"

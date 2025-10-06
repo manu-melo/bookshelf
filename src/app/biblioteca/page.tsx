@@ -2,14 +2,19 @@
 
 import { useState, useMemo } from "react";
 import { Book } from "@/types";
+import Link from "next/link";
 
 import { BookCard } from "@/components/BookCard";
+
+import { useBooksStorage } from "@/hooks/useBooksStorage";
+import { useToast } from "@/hooks/useToast";
+
 import { SearchBar } from "@/components/SearchBar";
 import { GenreFilter } from "@/components/GenreFilter";
 import { Button } from "@/components/ui/button";
-import { Plus, BookOpen } from "lucide-react";
+import ToastContainer from "@/components/ToastContainer";
+import { Plus, BookOpen, Trash2, ArrowLeft } from "lucide-react";
 
-import { useBooksStorage } from "@/hooks/useBooksStorage";
 import { useRouter } from "next/navigation";
 
 export default function BibliotecaPage() {
@@ -23,9 +28,12 @@ export default function BibliotecaPage() {
     updateReadingStatus,
     resetBooks,
   } = useBooksStorage();
+  const { toasts, success, error: showError, removeToast } = useToast();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("todos");
+  const [bookToDelete, setBookToDelete] = useState<Book | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Filtrar livros baseado na busca e gênero selecionado
   const filteredBooks = useMemo(() => {
@@ -41,23 +49,34 @@ export default function BibliotecaPage() {
     });
   }, [books, searchQuery, selectedGenre]);
 
-  const handleViewBook = (book: Book) => {
-    console.log("Visualizar livro:", book);
-    // TODO: Implementar navegação para página de detalhes
-  };
-
-  const handleEditBook = (book: Book) => {
-    console.log("Editar livro:", book);
-    // TODO: Implementar navegação para página de edição
-  };
-
   const handleDeleteBook = (book: Book) => {
+    setBookToDelete(book);
+  };
+
+  const confirmDelete = async () => {
+    if (!bookToDelete) return;
+
+    setIsDeleting(true);
+    try {
+      await removeBook(bookToDelete.id);
+      success(`Livro "${bookToDelete.title}" foi excluído com sucesso!`);
+      setBookToDelete(null);
+    } catch (error) {
+      console.error("Erro ao excluir livro:", error);
+      showError("Erro ao excluir o livro. Tente novamente.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setBookToDelete(null);
     const confirmDelete = window.confirm(
-      `Tem certeza que deseja excluir "${book.title}"?`
+      `Tem certeza que deseja excluir "${books.title}"?`
     );
 
     if (confirmDelete) {
-      removeBook(book.id);
+      removeBook(books.id);
       // TODO: Implementar toast de confirmação
     }
   };
@@ -80,6 +99,32 @@ export default function BibliotecaPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-4">
+              <Link
+                href="/"
+                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                <ArrowLeft className="h-5 w-5 mr-2" />
+                Voltar ao Dashboard
+              </Link>
+
+              <div className="flex items-center space-x-3">
+                <BookOpen className="h-8 w-8 text-gray-800" />
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+                  Biblioteca
+                </h1>
+                <span className="bg-gray-100 text-gray-600 text-sm px-2 py-1 rounded-full">
+                  {books.length} {books.length === 1 ? "livro" : "livros"}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
       <div className="container mx-auto px-4 py-8">
         {/* Cabeçalho */}
         <div className="mb-8">
@@ -99,13 +144,12 @@ export default function BibliotecaPage() {
               </div>
             </div>
             <div className="flex gap-2">
-              <Button
-                onClick={handleAddBook}
-                className="flex items-center gap-2"
-              >
-                <Plus className="w-4 h-4" />
-                Adicionar Livro
-              </Button>
+              <Link href="/livros/novo">
+                <Button className="flex items-center gap-2">
+                  <Plus className="w-4 h-4" />
+                  Adicionar Livro
+                </Button>
+              </Link>
               <Button
                 onClick={resetBooks}
                 variant="outline"
@@ -141,21 +185,17 @@ export default function BibliotecaPage() {
                 ? "Tente ajustar seus filtros de busca ou adicione um novo livro à sua biblioteca."
                 : "Sua biblioteca está vazia. Adicione seu primeiro livro para começar!"}
             </p>
-            <Button onClick={handleAddBook} variant="outline">
-              <Plus className="w-4 h-4 mr-2" />
-              Adicionar Primeiro Livro
-            </Button>
+            <Link href="/livros/novo">
+              <Button variant="outline">
+                <Plus className="w-4 h-4 mr-2" />
+                Adicionar Primeiro Livro
+              </Button>
+            </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {filteredBooks.map((book) => (
-              <BookCard
-                key={book.id}
-                book={book}
-                onView={handleViewBook}
-                onEdit={handleEditBook}
-                onDelete={handleDeleteBook}
-              />
+              <BookCard key={book.id} book={book} onDelete={handleDeleteBook} />
             ))}
           </div>
         )}
@@ -183,6 +223,45 @@ export default function BibliotecaPage() {
             </div>
           )}
       </div>
+
+      {/* Modal de Confirmação de Exclusão */}
+      {bookToDelete && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <div className="flex items-center mb-4">
+              <Trash2 className="h-6 w-6 text-red-600 mr-3" />
+              <h3 className="text-lg font-semibold text-gray-900">
+                Confirmar Exclusão
+              </h3>
+            </div>
+
+            <p className="text-gray-600 mb-6">
+              Tem certeza que deseja excluir o livro{" "}
+              <strong>"{bookToDelete.title}"</strong> de {bookToDelete.author}?{" "}
+              Esta ação não pode ser desfeita.
+            </p>
+
+            <div className="flex justify-end space-x-3">
+              <Button
+                variant="outline"
+                onClick={cancelDelete}
+                disabled={isDeleting}
+              >
+                Cancelar
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={confirmDelete}
+                disabled={isDeleting}
+              >
+                {isDeleting ? "Excluindo..." : "Excluir"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   );
 }

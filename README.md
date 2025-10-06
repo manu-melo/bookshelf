@@ -1,4 +1,4 @@
-# BookShelf Dashboard
+# BookShelf
 
 Um dashboard para gerenciamento de biblioteca pessoal, inspirado no design moderno e responsivo.
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { BookOpen, Star } from "lucide-react";
-import { Book } from "../types";
+import { Book, ReadingStatus } from "../types";
 
 interface RecentActivityProps {
   books: Book[];
@@ -9,25 +9,31 @@ interface RecentActivityProps {
 export default function RecentActivity({ books }: RecentActivityProps) {
   const getStatusBadge = (status: Book["status"]) => {
     switch (status) {
-      case "reading":
+      case ReadingStatus.LENDO:
         return (
           <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
             Lendo
           </span>
         );
-      case "completed":
+      case ReadingStatus.LIDO:
         return (
           <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
             Lido
           </span>
         );
-      case "to-read":
+      case ReadingStatus.QUERO_LER:
         return (
           <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
-            Para Ler
+            Quero Ler
           </span>
         );
-      case "abandoned":
+      case ReadingStatus.PAUSADO:
+        return (
+          <span className="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">
+            Pausado
+          </span>
+        );
+      case ReadingStatus.ABANDONADO:
         return (
           <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
             Abandonado

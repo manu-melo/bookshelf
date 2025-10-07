@@ -72,11 +72,11 @@ export default function BibliotecaPage() {
   const cancelDelete = () => {
     setBookToDelete(null);
     const confirmDelete = window.confirm(
-      `Tem certeza que deseja excluir "${books.title}"?`
+      `Tem certeza que deseja excluir "${bookToDelete?.title}"?`
     );
 
     if (confirmDelete) {
-      removeBook(books.id);
+      removeBook(bookToDelete?.id || "");
       // TODO: Implementar toast de confirmação
     }
   };

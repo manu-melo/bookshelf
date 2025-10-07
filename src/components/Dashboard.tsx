@@ -1,17 +1,6 @@
 "use client";
 
-import {
-  Book,
-  Search,
-  User,
-  Plus,
-  BarChart3,
-  BookOpen,
-  Menu,
-  X,
-} from "lucide-react";
-import { useState } from "react";
-import Link from "next/link";
+import { Book, User, Plus, BarChart3, BookOpen } from "lucide-react";
 import StatsCard from "./StatsCard";
 import ReadingStatusChart from "./ReadingStatusChart";
 import FavoriteGenresChart from "./FavoriteGenresChart";
@@ -20,7 +9,6 @@ import ReadingProgress from "./ReadingProgress";
 import { useDashboardData } from "../hooks/useDashboardData";
 
 export default function Dashboard() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { dashboardData, loading, error } = useDashboardData();
 
   if (loading) {
@@ -59,99 +47,6 @@ export default function Dashboard() {
   }
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo e Menu Mobile */}
-            <div className="flex items-center">
-              <div className="flex items-center space-x-3">
-                <Book className="h-8 w-8 text-gray-800" />
-                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-                  BookShelf
-                </h1>
-              </div>
-
-              {/* Desktop Navigation */}
-              <nav className="hidden lg:flex ml-8 space-x-8">
-                <Link
-                  href="/"
-                  className="text-gray-900 hover:text-gray-700 px-3 py-2 text-sm font-medium border-b-2 border-gray-900"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  href="/biblioteca"
-                  className="text-gray-500 hover:text-gray-700 px-3 py-2 text-sm font-medium"
-                >
-                  Biblioteca
-                </Link>
-              </nav>
-            </div>
-
-            {/* Desktop Actions */}
-            <div className="hidden md:flex items-center space-x-2 lg:space-x-4">
-              <button className="text-gray-500 hover:text-gray-700 p-2">
-                <Search className="h-5 w-5" />
-              </button>
-              <button className="text-gray-500 hover:text-gray-700 p-2">
-                <User className="h-5 w-5" />
-              </button>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="text-gray-500 hover:text-gray-700 p-2"
-              >
-                {isMobileMenuOpen ? (
-                  <X className="h-6 w-6" />
-                ) : (
-                  <Menu className="h-6 w-6" />
-                )}
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Menu */}
-          {isMobileMenuOpen && (
-            <div className="md:hidden border-t border-gray-200 py-4">
-              <div className="space-y-2">
-                <a
-                  href="#"
-                  className="block text-gray-900 hover:text-gray-700 px-3 py-2 text-base font-medium bg-gray-50 rounded-md"
-                >
-                  Dashboard
-                </a>
-                <a
-                  href="#"
-                  className="block text-gray-500 hover:text-gray-700 px-3 py-2 text-base font-medium"
-                >
-                  Biblioteca
-                </a>
-              </div>
-
-              {/* Mobile Actions */}
-              <div className="mt-4 pt-4 border-t border-gray-200 space-y-2">
-                <button className="w-full bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center space-x-2">
-                  <Plus className="h-4 w-4" />
-                  <span>Adicionar Livro</span>
-                </button>
-                <div className="flex justify-center space-x-6 pt-2">
-                  <button className="text-gray-500 hover:text-gray-700 p-2">
-                    <Search className="h-5 w-5" />
-                  </button>
-                  <button className="text-gray-500 hover:text-gray-700 p-2">
-                    <User className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </header>
-
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">

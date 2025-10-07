@@ -20,11 +20,10 @@ export default function AddBookPage() {
 
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
+  const [year, setYear] = useState<number | "">("");
   const [pages, setPages] = useState<number | "">("");
   const [currentPage, setCurrentPage] = useState<number | "">("");
-  const [status, setStatus] = useState<ReadingStatus>(
-    ReadingStatus.QUERO_LER
-  );
+  const [status, setStatus] = useState<ReadingStatus>(ReadingStatus.QUERO_LER);
   const [genre, setGenre] = useState<string>(GENRES[0]);
   const [isbn, setIsbn] = useState("");
   const [cover, setCover] = useState("");
@@ -33,7 +32,6 @@ export default function AddBookPage() {
   const [synopsis, setSynopsis] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-
 
   const totalFields = 10;
   const filledFields = [
@@ -63,7 +61,8 @@ export default function AddBookPage() {
     const newBook = {
       title,
       author,
-      pages: pages ? Number(pages) : undefined,
+      year: year ? Number(year) : new Date().getFullYear(),
+      pages: pages ? Number(pages) : 0,
       currentPage: currentPage ? Number(currentPage) : undefined,
       status,
       genre,
@@ -78,6 +77,7 @@ export default function AddBookPage() {
 
     setTitle("");
     setAuthor("");
+    setYear("");
     setPages("");
     setCurrentPage("");
     setStatus(ReadingStatus.QUERO_LER);
@@ -113,9 +113,19 @@ export default function AddBookPage() {
         />
         <Input
           type="number"
+          placeholder="Ano de publicação"
+          value={year}
+          onChange={(e) =>
+            setYear(e.target.value ? Number(e.target.value) : "")
+          }
+        />
+        <Input
+          type="number"
           placeholder="Total de páginas"
           value={pages}
-          onChange={(e) => setPages(e.target.value ? Number(e.target.value) : "")}
+          onChange={(e) =>
+            setPages(e.target.value ? Number(e.target.value) : "")
+          }
         />
         <Input
           type="number"
@@ -127,7 +137,10 @@ export default function AddBookPage() {
         />
 
         {/* Select de Status */}
-        <Select value={status} onValueChange={(v) => setStatus(v as ReadingStatus)}>
+        <Select
+          value={status}
+          onValueChange={(v) => setStatus(v as ReadingStatus)}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Selecione o status" />
           </SelectTrigger>
@@ -175,7 +188,9 @@ export default function AddBookPage() {
           type="number"
           placeholder="Avaliação (1-5)"
           value={rating}
-          onChange={(e) => setRating(e.target.value ? Number(e.target.value) : "")}
+          onChange={(e) =>
+            setRating(e.target.value ? Number(e.target.value) : "")
+          }
           min={1}
           max={5}
         />
